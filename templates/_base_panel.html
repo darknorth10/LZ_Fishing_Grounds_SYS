@@ -41,7 +41,7 @@
                 {% if user.is_authenticated %}
                   <div class="flex items-center gap-4">
                     <img alt="user profile"
-                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
+                    src="{% static 'img/user_sample.jpg' %}"
                     class="relative inline-block object-cover object-center w-12 h-12 rounded-full cursor-pointer"
                     data-tooltip-target="tooltip"
                     data-popover-target="profile-menu" />

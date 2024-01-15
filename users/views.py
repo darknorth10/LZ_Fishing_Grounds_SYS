@@ -1,4 +1,6 @@
 from django.shortcuts import redirect, render
+
+from .models import CustomUser
 from .forms import CustomUserCreationForm, SignInForm
 from django.contrib.auth import authenticate, login, logout
 
@@ -23,9 +25,11 @@ def index(request):
                 if user is not None:
                     login(request, user)
                     
-                    if user.role == "Customer":
-                      pass
-                    print(user.role)
+                    if user.role == "customer":
+                        return redirect('index')
+                    elif user.role == "admin" or user.role == "staff":
+                        return redirect('dashboard')
+                    
                 else:
                     print("Error")
                     message = "Incorrect username or password."
@@ -99,3 +103,14 @@ def sign_up(request):
 def email_sent_page(request):
         
     return render(request, 'users/email_sent.html')
+
+
+def management(request):
+    users = CustomUser.objects.all()
+    page = "user_management"
+    
+    context = {
+        'page_name': page,
+        'users': users
+    }
+    return render(request, 'user_management/index.html', context)
