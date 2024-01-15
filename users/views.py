@@ -27,7 +27,7 @@ def index(request):
                     
                     if user.role == "customer":
                         return redirect('index')
-                    elif user.role == "admin" or user.role == "staff":
+                    else:
                         return redirect('dashboard')
                     
                 else:
@@ -76,6 +76,7 @@ def sign_up(request):
         signUpForm = CustomUserCreationForm(request.POST)
         
         if signUpForm.is_valid():
+            signUpForm.role = "customer"
             signUpForm.save()
             return redirect('email_sent')
             

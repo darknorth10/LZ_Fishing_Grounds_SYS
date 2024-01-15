@@ -8,7 +8,8 @@ ROLE_CHOICES = [
   ]
 
 class CustomUser(AbstractUser):
-  role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="customer")
+  role = models.CharField(max_length=10, choices=ROLE_CHOICES, null=True)
+  
   email = models.EmailField(unique=True)
   is_verified = models.BooleanField(default=False)
   
