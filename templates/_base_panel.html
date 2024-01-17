@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Material Tailwind with Django</title>
+    <title>LZ Fishing Grounds</title>
  
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
@@ -154,13 +154,13 @@
 
      <!-- Content -->   
      
-    <div class="grow bg-slate-200 flex flex-row gap-5 p-10" id="main_content">
+    <div class="grow bg-slate-200 flex flex-row gap-5 p-10 overflow-auto" id="main_content">
       {% block content %}
       {% endblock content %}
     </div>
 
      <!-- Footer -->   
-    <footer class="w-full bg-slate-800 m-0 p-3">
+    <footer class="w-full bg-slate-800 m-0">
       <span class="block my-5 border-t border-blue-gray-600" />
       <p class="block font-sans text-base antialiased font-light leading-relaxed text-center text-white pt-3">
         ©  {% now "Y" %} LZ Fishing Grounds Petshop

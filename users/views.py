@@ -3,6 +3,8 @@ from django.shortcuts import redirect, render
 from .models import CustomUser
 from .forms import CustomUserCreationForm, SignInForm
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator
+
 
 
 # sign in view
@@ -100,18 +102,31 @@ def sign_up(request):
         
     return render(request, 'users/signup.html', context)
     
-    
+
+# successfull sign up and email verification page
 def email_sent_page(request):
         
     return render(request, 'users/email_sent.html')
 
 
+# User management view
 def management(request):
+    # users object
     users = CustomUser.objects.all()
     page = "user_management"
     
+    # pagination
+    paginator = Paginator(users, 5) # shows 4 users per page
+    
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
+    
+    # variables rendered to the template
     context = {
         'page_name': page,
-        'users': users
+        'users': users,
+        'page_obj': page_obj,
+        'page_char' : 'a' * page_obj.paginator.num_pages
     }
+    
     return render(request, 'user_management/index.html', context)
