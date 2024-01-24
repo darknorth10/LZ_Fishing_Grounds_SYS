@@ -21,10 +21,10 @@ from users.views import index
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     path('', index, name='index'),
-    path('users/', include('users.urls')),
-    path('Dashboard/', include('Dashboard.urls')),
+    path('users', include('users.urls')),
+    path('Dashboard', include('Dashboard.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
