@@ -1,9 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import CustomUser
 from .forms import CustomUserCreationForm, NewUserForm, SignInForm, CustomUserChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 
@@ -79,6 +80,7 @@ def sign_up(request):
         
         if signUpForm.is_valid():
             signUpForm.role = "customer"
+            
             signUpForm.save()
             return redirect('email_sent')
             
@@ -112,7 +114,13 @@ def email_sent_page(request):
 # User management view
 def management(request):
     # users object
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.all().order_by('-id')
+    
+    if request.GET.get("search"):
+        if request.GET.get("search") is not None:
+          
+            search = request.GET.get("search")
+            users = CustomUser.objects.filter(Q(username__icontains=search) | Q(email__icontains=search) | Q(last_name__icontains=search)).order_by('-id')
     page = "user_management"
     
     # pagination
@@ -130,6 +138,22 @@ def management(request):
     }
     
     return render(request, 'user_management/index.html', context)
+
+# User management view_all
+def view_all(request):
+    # users object
+    users = CustomUser.objects.all().order_by('-id')
+    
+    page = "user_management"
+    
+    # variables rendered to the template
+    context = {
+        'page_name': page,
+        'users': users,
+    }
+    
+    return render(request, 'user_management/view_all.html', context)
+
 
 # add user page 
 def new_user_page(request):
@@ -164,19 +188,23 @@ def new_user_page(request):
 # update user page
 
 def update_user_page(request, id):
-    user = CustomUser.objects.get(id=id)
+    # user = CustomUser.objects.get(id=id)
     
-   # obj = get_object_or_404(CustomUser)
+    obj = get_object_or_404(CustomUser, id = id)
    
-    form = CustomUserChangeForm(request.POST or None, instance = user)
+    form = CustomUserChangeForm(request.POST or None, instance = obj)
     
     if request.method == "POST":
         
-        if form.is_valid:
+        if form.is_valid():
           
           form.save()
           
-          return redirect('user_management')   
+          return redirect('user_management')
+      
+        else:
+            
+            print(form.errors) 
 
     context = {
         'form' : form

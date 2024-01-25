@@ -43,8 +43,15 @@ INSTALLED_APPS = [
     'compressor',
     'users',
     'Dashboard',
+    'Products',
+    "crispy_forms",
+    "crispy_tailwind",
     
 ]
+# Crispy Forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 # user model
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -86,13 +93,13 @@ WSGI_APPLICATION = 'LZ_Fishing_Ground_SYS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'NAME': 'lz_fishing_db',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
+        # 'USER': 'postgres',
+        # 'NAME': 'lz_fishing_db',
+        # 'PASSWORD': 'root',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
