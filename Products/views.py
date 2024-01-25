@@ -29,11 +29,13 @@ def create_product_page(request):
     form = ProductCreationForm()
     
     if request.method == "POST":
-        form = ProductCreationForm(request.POST)
+        form = ProductCreationForm(request.POST or None, request.FILES or None)
         
-        if form.is_valid:
+        if form.is_valid():
+            
             form.save()
             return redirect('product_management')
+        
     context = {
         'form': form
     }
@@ -49,9 +51,11 @@ def update_product_page(request, id):
     
     if request.method == "POST":
         
-        if form.is_valid:
+        if form.is_valid():
+            
             form.save()
             return redirect('product_management')
+        
         else:
             print(form.errors)
             

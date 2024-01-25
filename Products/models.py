@@ -11,8 +11,8 @@ class Products(models.Model):
     
     name = models.CharField(max_length=60, null=False, unique=True)
     
-    category = models.CharField(max_length=40, null=False, unique=True, choices=CATEGORY_CHOICES)
-    sub_category = models.CharField(max_length=40, null=False, unique=True)
+    category = models.CharField(max_length=40, null=False, choices=CATEGORY_CHOICES)
+    sub_category = models.CharField(max_length=40, null=False)
     price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     current_stocks = models.PositiveIntegerField(null=False)
     description = models.CharField(max_length=255, null=True)
