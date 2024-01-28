@@ -35,7 +35,7 @@ module.exports = withMT({
       
     },
     fontFamily: {
-      sans: [ 'ui-sans-serif', 'system-ui', 'sans-serif',],
+      sans: [ 'Open sans', 'ui-sans-serif', 'system-ui', 'sans-serif',],
     },
     extend: {
       colors: {

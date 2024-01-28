@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'Products',
     "crispy_forms",
     "crispy_tailwind",
+    "livereload",
     
 ]
 # Crispy Forms
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'LZ_Fishing_Ground_SYS.urls'
