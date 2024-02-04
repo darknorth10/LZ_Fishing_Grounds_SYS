@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-   
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    
     'compressor',
     'users',
     'Dashboard',
@@ -95,13 +96,13 @@ WSGI_APPLICATION = 'LZ_Fishing_Ground_SYS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        # 'USER': 'postgres',
-        # 'NAME': 'lz_fishing_db',
-        # 'PASSWORD': 'root',
-        # 'HOST': 'localhost',
-        # 'PORT': '5432',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': 'postgres',
+        'NAME': 'lz_fishing_db',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

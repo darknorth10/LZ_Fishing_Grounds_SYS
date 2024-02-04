@@ -157,6 +157,44 @@
     <div class="grow bg-slate-200 flex flex-row gap-5 p-10 overflow-auto" id="main_content">
       {% block content %}
       {% endblock content %}
+
+      {% comment %} messages {% endcomment %}
+    {% if messages %}
+    {% for message in messages %}
+    
+    <div class="fixed bottom-11 right-5">
+      <div
+      role="alert"
+      class="relative flex w-full px-4 py-4 text-base text-white {% if message.tags == "success" %}bg-teal-600{% else %} bg-red-600{% endif %} rounded-lg font-regular animate-fadeRight"
+      data-dismissible="alert"
+    >
+      <div class="mr-12 ">{{ message }}</div>
+      <button
+        data-dismissible-target="alert"
+        class="!absolute  top-3 right-3 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        type="button"
+      >
+        <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-6 h-6"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+    </div>
+    {% endfor %}
+    {% endif %}
     </div>
 
      <!-- Footer -->   
@@ -173,6 +211,7 @@
     <script type="module" src="{% static 'src/js/popover.js' %}"></script>
     <script src="{% static 'src/js/ripple.js' %}"></script>
     <script src="{% static 'src/js/dialog.js' %}"></script>
+    <script src="{% static 'src/js/dismissible.js' %}"></script>
     <script src="{% static 'src/js/collapse.js' %}"></script>
     <script type="module" src="{% static 'src/js/tooltip.js' %}"></script>
     

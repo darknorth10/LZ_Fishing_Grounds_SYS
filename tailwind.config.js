@@ -5,7 +5,9 @@ import withMT from "@material-tailwind/html/utils/withMT";
 module.exports = withMT({
   content: [
     './templates/**/*.html',
+
   ],
+
   theme: {
     colors: {
       blue: {
@@ -52,7 +54,26 @@ module.exports = withMT({
           900: '#0f172a',
         },
       },
+      keyframes: {
+        fadeTop: {
+          '0%': { transform:'translateY(-50px)', opacity:'0' },
+          '100%': { transform:'translateY(0)', opacity:'1' },
+        },
+        fadeRight: {
+          '0%': { transform:'translateX(50px)', opacity:'0' },
+          '100%': { transform:'translateX(0)', opacity:'1' },
+        },
+       
+      },
+      animation: {
+        fadeTop: 'fadeTop .6s cubic-bezier(.39,.575,.565,1.000) both',
+        fadeRight: 'fadeRight .5s cubic-bezier(.39,.575,.565,1.000) both',
+        fadeRight1: 'fadeRight 1s cubic-bezier(.39,.575,.565,1.000) both',
+        fadeRight2: 'fadeRight 1.5s cubic-bezier(.39,.575,.565,1.000) both',
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
 });

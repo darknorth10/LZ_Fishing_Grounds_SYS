@@ -18,7 +18,10 @@
   href="https://fonts.googleapis.com/icon?family=Material+Icons"
   rel="stylesheet"
 />
-
+    {% if page_name == "index" %}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    {% endif %}
+    
 </head>
  
   <body class="flex flex-col h-screen p-0 overflow-hidden">
@@ -179,7 +182,7 @@
 
      <!-- Content -->   
      
-    <div class="grow bg-slate-200 overflow-auto" id="main_content">
+    <div class="h-screen transition-all bg-slate-200 overflow-auto" id="main_content">
       {% block content %} {% endblock content %}
     </div>
 
@@ -194,11 +197,18 @@
 
 
     <!-- script -->
+    {% if page_name == "index" %}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    {% endif %}
     <script type="module" src="{% static 'src/js/popover.js' %}"></script>
     <script src="{% static 'src/js/ripple.js' %}"></script>
     <script src="{% static 'src/js/dialog.js' %}"></script>
     <script src="{% static 'src/js/collapse.js' %}"></script>
     <script type="module" src="{% static 'src/js/tooltip.js' %}"></script>
+
     
   </body>
 

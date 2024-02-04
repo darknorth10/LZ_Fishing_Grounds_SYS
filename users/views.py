@@ -1,17 +1,15 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
 from .models import CustomUser
 from .forms import CustomUserCreationForm, NewUserForm, SignInForm, CustomUserChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 from django.db.models import Q
-
-
-
+from django.contrib import messages
 # sign in view
 def index(request):
     signInForm = SignInForm()
     signUpForm = CustomUserCreationForm()
+    page_name = "index"
     message = ""
     
     if request.method == "POST":
@@ -45,7 +43,7 @@ def index(request):
                        
     
     
-    return render(request, 'index.html', context={'form' : signInForm, 'err': message, 'form2' : signUpForm})
+    return render(request, 'index.html', context={'form' : signInForm, 'err': message, 'form2' : signUpForm, 'page_name': page_name})
 
 
 
@@ -164,8 +162,11 @@ def new_user_page(request):
         
         if new_user_form.is_valid():
             new_user_form.save()
-            return redirect('user_management')     
-             
+            messages.add_message(request, messages.SUCCESS, "New user has been registered successfully.")
+            return redirect('user_management')   
+          
+        else:
+            messages.add_message(request, messages.ERROR, "Error creating user.")
         
     new_user_form.fields['password1'].widget.attrs.update({
                 'class': "w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer border-blue-gray-200 border-t-transparent text-blue-gray-700 outline outline-0 placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50",
@@ -177,6 +178,7 @@ def new_user_page(request):
                 'placeholder': " ",
                 'minlength' : "8"
             }) 
+    
      
     context = {
         'form': new_user_form,
