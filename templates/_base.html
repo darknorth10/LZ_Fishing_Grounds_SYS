@@ -19,7 +19,7 @@
   rel="stylesheet"
 />
     {% if page_name == "index" %}
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.0/dist/aos.css" rel="stylesheet">
     {% endif %}
     
 </head>
@@ -47,7 +47,7 @@
                   </li>
                   <li class="block p-1 font-sans antialiased font-normal leading-normal text-dark-600">
                     <a href="#products" class="flex items-center">
-                      Products
+                      Store
                     </a>
                   </li>
                   <li class="block p-1 font-sans antialiased font-normal leading-normal text-dark-600">
@@ -57,7 +57,7 @@
                   </li>
                   <li class="block p-1 font-sans antialiased font-normal leading-normal text-dark-600">
                     <a href="#about" class="flex items-center">
-                      About
+                      Contacts
                     </a>
                   </li>
                 </ul>
@@ -198,9 +198,12 @@
 
     <!-- script -->
     {% if page_name == "index" %}
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.0/dist/aos.js"></script>
     <script>
-      AOS.init();
+      AOS.init({
+        duration: 1200,
+      })
     </script>
     {% endif %}
     <script type="module" src="{% static 'src/js/popover.js' %}"></script>
