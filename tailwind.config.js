@@ -74,6 +74,6 @@ module.exports = withMT({
     },
   },
   plugins: [
-    require('@tailwindcss/forms')
+    require('@tailwindcss/forms'),
   ],
 });

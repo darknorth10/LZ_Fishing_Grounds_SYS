@@ -148,3 +148,25 @@ def add_stocks_view(request, id):
     
     
     return render(request, "products/add_stocks.html", context)
+
+
+def stockslog_view(request):
+    stockslog = StocksLog.objects.all().order_by('-id')
+    
+    page = "stocks"
+    
+    # pagination
+    paginator = Paginator(stockslog, 5) # shows 4 logs per page
+    
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
+    
+    # variables rendered to the template
+    context = {
+        'page_name': page,
+        'stockslog': stockslog,
+        'page_obj': page_obj,
+        'page_char' : 'a' * page_obj.paginator.num_pages
+    }
+    
+    return render(request, "products/stocks_logs.html", context)
