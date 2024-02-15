@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'Dashboard',
     'Products',
+    'PointOfSale',
     "crispy_forms",
     "crispy_tailwind",
     "livereload",
