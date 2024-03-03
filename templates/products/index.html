@@ -215,7 +215,7 @@
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="w-max">
                     <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                        {{ product.price }}
+                      &#8369 {{ product.formatted_price }}
                     </p>
                   </div>
                 </td>
@@ -226,17 +226,33 @@
                 </td>
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="w-max">
-                    {% if product.is_available %}
+                    {% if product.is_available and product.stocks > 5 %}
                     <div
                       class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
                       <span class="">Available</span>
                     </div>
-                    {% else %}
+                    {% elif product.stocks == 0 %}
+                    <a href="{% url 'add_stocks' product.id %}"
+                      class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-slate-900 uppercase rounded-md select-none whitespace-nowrap bg-red-500/20">
+                      <span class="">Out of Stocks</span>
+                      <span
+                        class="absolute rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4 bg-red-500 text-white min-w-[14px] min-h-[14px]">
+                      </span>
+                    </a>
+                    {% elif not product.is_available and product.stocks > 5 %}
                     <div
                       class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-slate-900 uppercase rounded-md select-none whitespace-nowrap bg-slate-500/20">
-                      <span class="">Out of Stocks</span>
+                      <span class="">Not Available</span>
                     </div>
 
+                    {% elif product.stocks <= 5 and product.stocks >= 1 %}
+                    <a href="{% url 'add_stocks' product.id %}"
+                      class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-slate-900 uppercase rounded-md select-none whitespace-nowrap bg-red-500/20">
+                      <span class="">Needs to be Re-stock</span>
+                      <span
+                        class="absolute rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4 bg-red-500 text-white min-w-[14px] min-h-[14px]">
+                      </span>
+                    </a>
                     {% endif %}
                   </div>
                 </td>

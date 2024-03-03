@@ -21,7 +21,7 @@ from users.views import index
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('users/', include('users.urls')),
     path('Dashboard/', include('Dashboard.urls')),

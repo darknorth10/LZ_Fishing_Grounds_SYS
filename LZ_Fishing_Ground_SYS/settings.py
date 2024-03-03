@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'PointOfSale',
     "crispy_forms",
     "crispy_tailwind",
-    "livereload",
+
     
 ]
 # Crispy Forms
@@ -67,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'livereload.middleware.LiveReloadScript',
+
 ]
 
 ROOT_URLCONF = 'LZ_Fishing_Ground_SYS.urls'
@@ -147,6 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

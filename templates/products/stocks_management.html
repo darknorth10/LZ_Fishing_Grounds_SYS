@@ -66,6 +66,18 @@
                   class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-teal-600 hover:bg-teal-500">
                   <p
                     class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
+                    Product ID
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                      stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                    </svg>
+                  </p>
+                </th>
+                <th
+                  class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-teal-600 hover:bg-teal-500">
+                  <p
+                    class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
                     Product Name
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                       stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -125,6 +137,14 @@
             {% for product in page_obj %}
               <tr>
                 <td class="p-4 border-b border-blue-gray-50">
+                  <div class="flex flex-col">
+                    <p class="block font-sans text-sm uppercase antialiased font-normal leading-normal text-blue-gray-900">
+                        {{ product.id }}
+                    </p>
+                    
+                  </div>
+                </td>
+                <td class="p-4 border-b border-blue-gray-50">
                   <div class="flex items-center gap-3">
                     <img src="{{ product.product_img.url }}"
                       alt="John Michael" class="relative inline-block h-10 w-10 !rounded-full object-cover object-center" />
@@ -136,6 +156,7 @@
                     </div>
                   </div>
                 </td>
+                
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="flex flex-col">
                     <p class="block font-sans text-sm uppercase antialiased font-normal leading-normal text-blue-gray-900">

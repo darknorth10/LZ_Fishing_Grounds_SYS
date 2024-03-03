@@ -4,6 +4,7 @@ from .models import Products, StocksLog
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
+import datetime
 
 # Main Page of Products in admin side
 def index(request):
@@ -42,8 +43,14 @@ def create_product_page(request):
         form = ProductCreationForm(request.POST or None, request.FILES or None)
         
         if form.is_valid():
+            current_datetime = datetime.datetime.now()
+            prod_id = current_datetime.strftime("%Y%m%d%H%M%S")
             
-            form.save()
+            product = form.save(commit=False)
+            
+            product.id = prod_id
+            product.save()
+            
             messages.add_message(request, messages.SUCCESS, "New product has been registered successfully.")
             return redirect('product_management')
         
@@ -120,15 +127,18 @@ def add_stocks_view(request, id):
     if request.method == "POST":
         form = AddStockForm(request.POST)
         if form.is_valid():
+            current_datetime = datetime.datetime.now()
+            formatted_datetime = current_datetime.strftime("%Y%m%d%H%M%S")
             
             product_name = obj.name
            # current_stocks = obj.stocks
             stocks_added = form.cleaned_data['stocks_added']
             supplier = form.cleaned_data['supplier']
             total_cost = form.cleaned_data['total_cost']
+            
             added_by = request.user.username
             
-            new_stocks = StocksLog.objects.create(product_id=obj.id, stocks_added=stocks_added, supplier=supplier, total_cost=total_cost, added_by=added_by)
+            new_stocks = StocksLog.objects.create(id=formatted_datetime, product_id=obj, stocks_added=stocks_added, supplier=supplier, total_cost=total_cost, added_by=added_by)
             
             
             new_stocks.save()

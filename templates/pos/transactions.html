@@ -127,7 +127,32 @@
                   class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-600 hover:bg-blue-500">
                   <p
                     class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
+                    Type
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                      stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                    </svg>
+                  </p>
+                </th>
+                
+                <th
+                  class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-600 hover:bg-blue-500">
+                  <p
+                    class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
                     Cashier
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                      stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                    </svg>
+                  </p>
+                </th>
+                <th
+                  class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-600 hover:bg-blue-500">
+                  <p
+                    class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
+                    Status
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                       stroke="currentColor" aria-hidden="true" class="w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round"
@@ -165,7 +190,7 @@
                     
                     <div class="flex flex-col">
                       <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                        {{ transaction.total }}
+                        &#8369 {{ transaction.formatted_total }}
                       </p>
                       
                     </div>
@@ -174,7 +199,7 @@
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="flex flex-col">
                     <p class="block font-sans text-sm uppercase antialiased font-normal leading-normal text-blue-gray-900">
-                        {{ transaction.payment }}
+                      &#8369 {{ transaction.formatted_payment }}
                     </p>
                     
                   </div>
@@ -182,7 +207,7 @@
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="flex flex-col">
                     <p class="block font-sans text-sm uppercase antialiased font-normal leading-normal text-blue-gray-900">
-                        {{ transaction.change }}
+                      &#8369 {{ transaction.formatted_change }}
                     </p>
                     
                   </div>
@@ -193,6 +218,12 @@
                         {{ transaction.date_occured }}
                     </p>
                   </div>
+                <td class="p-4 border-b border-blue-gray-50">
+                  <div class="w-max">
+                    <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                        {{ transaction.payment_method }}
+                    </p>
+                  </div>
                 </td>
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="w-max">
@@ -201,21 +232,39 @@
                     </p>
                   </div>
                 </td>
+
+                <td class="p-4 border-b border-blue-gray-50">
+                  <div class="w-max">
+                    {% if transaction.status == "pending"  %}
+                    <p class="block font-sans text-sm uppercase antialiased font-normal leading-normal text-amber-700">
+                        {{ transaction.status }}
+                    </p>
+                    {% elif transaction.status == "complete" %}
+                    <p class="block font-sans text-sm uppercase antialiased font-normal leading-normal text-teal-600">
+                        {{ transaction.status }}
+                    </p>
+
+                    {% endif %}
+                    
+                  </div>
+                </td>
                 
 
                 <td class="p-4 border-b border-blue-gray-50">
-                  <a href=""
+                  {% if transaction.status == 'success' %}
+                  <a href="#"
                     class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                     type="button">
                     <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-                        class="w-4 h-4">
-                        <path
-                          d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z">
-                        </path>
-                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="h-5 w-5"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
                     </span>
+                    
                   </a>
+                  {% endif %}
+                  <a href="{% url 'payment' transaction.id %}" target="_blank" class="select-none rounded-lg bg-gradient-to-r from-teal-500 to-blue-500 py-2 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" >
+                    Settle Payment
+                  </a>
+
                 </td>
               </tr>
             {% endfor %}

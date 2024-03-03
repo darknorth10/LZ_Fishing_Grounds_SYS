@@ -2,16 +2,18 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 
-CATEGORY_CHOICES = [
-    ("fish", "Fish"),
-    ("aquarium supplies", "Aquarium Supplies"),
-    ("fish food", "Fish Food"),
-]
+class Product_Category(models.Model):
+    category = models.CharField(max_length=50, null=False)
+    date_added = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return self.category
+    
+    
 class Products(models.Model):
     
     name = models.CharField(max_length=60, null=False, unique=True)
-    category = models.CharField(max_length=40, null=False, choices=CATEGORY_CHOICES)
+    category = models.ForeignKey(Product_Category, on_delete=models.CASCADE)
     sub_category = models.CharField(max_length=40, null=False)
     price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     stocks = models.PositiveIntegerField(null=False)
@@ -24,10 +26,24 @@ class Products(models.Model):
     def __str__(self):
         return self.name
     
+    def formatted_price(self):
+        formatted = "{:,}".format(self.price)
+        return formatted
     
+    
+class Supplier(models.Model):
+
+    name = models.CharField(max_length=200, null=False, unique=True)
+    date_added = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
+
+
+
 class StocksLog(models.Model):
-    product_id = models.CharField(max_length=200, null=True)
-    supplier = models.CharField(max_length=200, null=False)
+    product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     total_cost = models.DecimalField(max_digits=9, decimal_places=2, null=False)
     stocks_added = models.PositiveIntegerField(null=False)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -35,3 +51,8 @@ class StocksLog(models.Model):
     
     def __str__(self):
         return str(self.product_id)
+    
+    
+
+
+

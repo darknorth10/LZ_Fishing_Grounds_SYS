@@ -20,11 +20,17 @@ $(document).ready(function () {
             data: $(this).serialize(),
             
             success: function (response) {
-                // console.log(response)
-                $("#cart").load(location.href+" #cart>*","");
-                $("#ConfirmationForm").load(location.href+" #ConfirmationForm>*","");
-                $("#dialogDeleteClose").click();
-                $("#qtty").val("");
+
+                if (response.success) {
+                    console.log(response)
+                    $("#cart").load(location.href+" #cart>*","");
+                    $("#ConfirmationForm").load(location.href+" #ConfirmationForm>*","");
+                    $("#dialogDeleteClose").click();
+                    $("#qtty").val("");
+                } else {
+                    alert(response.err)
+                }
+                
             }
         });
 
@@ -48,9 +54,9 @@ $(document).ready(function () {
     $("#delItem").click( function(e) {
         e.preventDefault();
 
-        $("#cart").load( $(this).attr("href") + " #cart>*","");
-        location.reload();
-        // $("#total").text( $("#subtotaltxt").text() );
+        window.location.href = $(this).attr('href');
+        
+        
     });
 
 

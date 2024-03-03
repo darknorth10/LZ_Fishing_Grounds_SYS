@@ -2,7 +2,8 @@
   "dependencies": {
     "@material-tailwind/html": "^2.2.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "aos": "^2.3.4"
+    "aos": "^2.3.4",
+    "flowbite": "^2.3.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7"

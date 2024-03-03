@@ -5,6 +5,7 @@ import withMT from "@material-tailwind/html/utils/withMT";
 module.exports = withMT({
   content: [
     './templates/**/*.html',
+    './node_modules/flowbite/**/*.js'
 
   ],
 
@@ -76,5 +77,6 @@ module.exports = withMT({
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
+    require('flowbite/plugin'),
   ],
 });
