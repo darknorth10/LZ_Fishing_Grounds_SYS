@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Products',
     'PointOfSale',
     'AuditTrail',
+    'Settings',
     "crispy_forms",
     "crispy_tailwind",
 
