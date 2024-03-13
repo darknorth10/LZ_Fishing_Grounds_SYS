@@ -66,8 +66,45 @@ $(document).ready(function () {
         
     });
 
+    // show hide the payment form depending on radio button value
 
-    $(document).on('change', "input:radio[name='payment_type']", function () {
-        console.log("asdasd")
+    $('input:radio[name="payment_method"]').change(function () { 
+        
+        let payment_method = $(this).val();
+
+        if (payment_method == "cash") {
+            $("#cash_form").show();
+            $("#gcash_form").hide();
+        } else if (payment_method == "gcash") {
+            $("#gcash_form").show();
+            $("#cash_form").hide();
+        } else {
+            $("#cash_form").hide();
+            $("#gcash_form").hide();
+        }
+
+
     });
+
+    // show change when typing
+    
+    $(document).on("change", "#payment", function () { 
+        let total = parseInt($("#grand_total").attr("data-subtotal"));
+        let payment = $(this).val()
+        let change = payment - total
+
+        let formatted_change = (Math.round(change * 100) / 100).toFixed(2);
+
+        if(payment >= total) {
+            $("#payment_change").val("₱ " + formatted_change);
+            //console.log("₱ " + formatted_change)
+            $("#cash_btn").removeAttr("disabled");
+        } else {
+            $("#cash_btn").attr("disabled", "disabled");
+        }
+        
+        //console.log($(this).val())
+    });
+
+
 });

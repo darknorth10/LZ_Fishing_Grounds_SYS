@@ -5,7 +5,7 @@
 {% block content %}
     {% include "component/sidebar.html" %}
 
-    <div class="relative flex flex-col w-full h-auto p-8 text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
+    <div class="relative flex flex-col max-w-[1350px] h-auto p-8 text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div class="relative mx-4 mt-4 text-gray-700 bg-white rounded-none bg-clip-border">
           <div class="flex items-center justify-between gap-8 mb-8">
             <div>
@@ -152,6 +152,30 @@
                   class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-600 hover:bg-blue-500">
                   <p
                     class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
+                    Gcash
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                      stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                    </svg>
+                  </p>
+                </th>
+                <th
+                  class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-600 hover:bg-blue-500">
+                  <p
+                    class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
+                    Reference no.
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                      stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                    </svg>
+                  </p>
+                </th>
+                <th
+                  class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-600 hover:bg-blue-500">
+                  <p
+                    class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-white">
                     Status
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                       stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -190,7 +214,7 @@
                     
                     <div class="flex flex-col">
                       <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                        &#8369 {{ transaction.formatted_total }}
+                        &#8369; {{ transaction.formatted_total }}
                       </p>
                       
                     </div>
@@ -232,6 +256,20 @@
                     </p>
                   </div>
                 </td>
+                <td class="p-4 border-b border-blue-gray-50">
+                  <div class="w-max">
+                    <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                        {{ transaction.gcash_num }}
+                    </p>
+                  </div>
+                </td>
+                <td class="p-4 border-b border-blue-gray-50">
+                  <div class="w-max">
+                    <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                        {{ transaction.ref }}
+                    </p>
+                  </div>
+                </td>
 
                 <td class="p-4 border-b border-blue-gray-50">
                   <div class="w-max">
@@ -251,7 +289,7 @@
                 
 
                 <td class="p-4 border-b border-blue-gray-50">
-                  {% if transaction.status == 'success' %}
+                  {% if transaction.status == 'complete' %}
                   <a href="#"
                     class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                     type="button">
@@ -260,10 +298,15 @@
                     </span>
                     
                   </a>
-                  {% endif %}
+                  {% else %}
                   <a href="{% url 'payment' transaction.id %}" target="_blank" class="select-none rounded-lg bg-gradient-to-r from-teal-500 to-blue-500 py-2 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" >
                     Settle Payment
                   </a>
+                  <a href="{% url 'cancel_payment' transaction.id %}" target="_blank" class="select-none rounded-lg mx-3 bg-gradient-to-r from-red-500 to-pink-500 py-2 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" >
+                    Cancel Transaction
+                  </a>
+                  {% endif %}
+                  
 
                 </td>
               </tr>

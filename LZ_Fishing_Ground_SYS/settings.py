@@ -40,12 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    
+    'channels',
     'compressor',
     'users',
     'Dashboard',
     'Products',
     'PointOfSale',
+    'AuditTrail',
     "crispy_forms",
     "crispy_tailwind",
 
@@ -135,7 +136,7 @@ if DEBUG:
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 

@@ -1,5 +1,6 @@
 from django.db import models
 from Products.models import Products
+from django.db.models import Sum
 
 # Create your models here.
 class Cart(models.Model):
@@ -22,13 +23,14 @@ class Transaction(models.Model):
     
     total = models.DecimalField(max_digits=9, decimal_places=2)
     change  = models.DecimalField(max_digits=9, decimal_places=2, null=True)
-    date_occured = models.DateField(auto_now_add=True)
+    date_occured = models.DateField(auto_now=True)
     cashier = models.CharField(max_length=50, null=False)
     payment_method = models.CharField(max_length=50, null=True)
     payment = models.DecimalField(max_digits=9, decimal_places=2, null=True, default=0)
     gcash_num = models.CharField(max_length=50, null=True)
     ref = models.CharField(max_length=50, null=True)
     status = models.CharField(max_length=50, null=False, default="pending")
+    
     
     def formatted_total(self):
         formatted = "{:,}".format(self.total)
@@ -59,4 +61,10 @@ class Item(models.Model):
     
     def __str__(self):
         return str(self.tnum)
+    
+    def formatted_subtotal(self):
+        
+        subtotal = self.objects.aggregate(Sum('subotal'))['subotal__sum']
+        formatted = "{:,.2f}".format(subtotal)
+        return formatted
     

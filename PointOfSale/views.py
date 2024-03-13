@@ -1,6 +1,7 @@
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from AuditTrail.models import AuditLog
 from Products.models import Products
 from django.contrib import messages
 from . models import Cart, Item, Transaction
@@ -45,6 +46,10 @@ def index(request):
                     
                     new_cart = Cart(product_id=product, product_name=product.name, quantity=quantity, subtotal=subtotal_item)
                     new_cart.save()
+                    
+                    audit = AuditLog(audit_name=request.user.username, audit_action="Added item to the cart.", audit_module="Point of Sale")
+                    audit.save()
+                    
                     return JsonResponse({"success": True})
                 else:
                     messages.add_message(request, messages.ERROR, "Desired quantity exceeded current stocks.")
@@ -93,7 +98,8 @@ def delete_item(request, id):
          messages.add_message(request, messages.ERROR, "Item was not member of the cart.")
     else:
         item.delete()
-        
+        audit = AuditLog(audit_name=request.user.username, audit_action="Deleted item from cart.", audit_module="Point of Sale")
+        audit.save()
         
     return redirect("pos")
 
@@ -144,6 +150,9 @@ def trasactions(request):
             search = request.GET.get("search")
             trasactions = Transaction.objects.filter(Q(id__icontains=search) | Q(status__icontains=search) | Q(payment_method__icontains=search)).order_by('-id')
             
+            audit = AuditLog(audit_name=request.user.username, audit_action="Searched from Transactions.", audit_module="Point of Sale")
+            audit.save()
+            
     page = "pos"
     
     # pagination
@@ -165,6 +174,9 @@ def trasactions(request):
 def cancel_transaction(request):
     Cart.objects.all().delete()
     messages.add_message(request, messages.SUCCESS, "Transaction has been cleared.")
+    
+    audit = AuditLog(audit_name=request.user.username, audit_action="Cancelled a transacction.", audit_module="Point of Sale")
+    audit.save()
     return redirect('pos')
 
 
@@ -172,9 +184,139 @@ def payment_view(request, id):
 
     page_name = "pos"
     
+    items = Item.objects.filter(tnum=id).order_by('-id')
+    subtotal_raw = Item.objects.filter(tnum=id).aggregate(Sum('subtotal'))
+        
+    if subtotal_raw['subtotal__sum'] is not None:
+        
+        subtotal = "{:,.2f}".format(subtotal_raw['subtotal__sum'])
+        
+        
+    if request.method == "POST":
+        payment_method = request.POST.get("payment_method")
+        tnum = request.POST.get("tnum")
+        if payment_method is not None and payment_method == "cash":
+            # print("cash")
+            if request.POST.get("payment") is not None and int(request.POST.get("payment")) >= subtotal_raw['subtotal__sum']:
+                payment = int(request.POST.get("payment"))
+                change = payment - subtotal_raw['subtotal__sum']
+                
+                method = "cash"
+                status = "complete"
+                
+                transaction = Transaction.objects.get(id=int(tnum))
+                err = 0
+                
+                for item in items:
+                    product = Products.objects.get(name=item.product_id)
+                    if product.stocks >= item.quantity:
+                        product.stocks -= item.quantity
+                        product.save()
+                    else:
+                        err += 1
+                    
+                    
+                if err == 0:
+                    transaction.payment = payment
+                    transaction.change = change
+                    transaction.status = status
+                    transaction.payment_method = method
+                    transaction.date_occured = datetime.datetime.now()
+                    transaction.save()
+                
+                    messages.add_message(request, messages.SUCCESS, "Transaction has been compeleted.")
+                    
+                    audit = AuditLog(audit_name=request.user.username, audit_action="Completed a cash transaction.", audit_module="Point of Sale")
+                    audit.save()
+                
+                    return redirect("transaction_views")
+                
+                else:
+                    messages.add_message(request, messages.ERROR, "Transaction has been cancelled due to an item stock being insufficient.")
+                    return redirect("transaction_views")
+                    
+                
+        elif payment_method is not None and payment_method == "gcash":
+                tnum = request.POST.get("tnum")
+                payment = subtotal_raw['subtotal__sum']
+                change = 0
+                
+                method = "gcash"
+                status = "complete"
+                ref = request.POST.get("ref")
+                gcash = request.POST.get("num")
+                
+                transaction = Transaction.objects.get(id=int(tnum))
+                err = 0
+                
+                for item in items:
+                    product = Products.objects.get(name=item.product_id)
+                    if product.stocks >= item.quantity:
+                        product.stocks -= item.quantity
+                        product.save()
+                    else:
+                        err += 1
+                    
+                    
+                if err == 0:
+                    transaction.payment = payment
+                    transaction.change = change
+                    transaction.status = status
+                    transaction.gcash_num = gcash
+                    transaction.ref = ref
+                    transaction.payment_method = method
+                    transaction.date_occured = datetime.datetime.now()
+                    transaction.save()
+                
+                    messages.add_message(request, messages.SUCCESS, "Transaction has been compeleted.")
+
+                    
+                    audit = AuditLog(audit_name=request.user.username, audit_action="Completed a gcash transaction.", audit_module="Point of Sale")
+                    audit.save()
+                    
+                    
+                    return redirect("transaction_views")
+                
+                else:
+                    messages.add_message(request, messages.ERROR, "Transaction has been cancelled due to an item stock being insufficient.")
+                    return redirect("transaction_views")
+            
+            
+        
     context = {
         'page_name': page_name,
-        'tnum': id
+        'tnum': id,
+        'items': items,
+        'subtotal': subtotal,
+        'subtotal_raw': subtotal_raw['subtotal__sum'],
     }
+ 
+
     return render(request, "pos/payment.html", context)
     
+    
+    
+def cancel_payment_view(request, id):
+
+    page_name = "pos"
+            
+      
+    if request.GET.get('confirm') is not None:
+        if request.GET.get('confirm') == "yes":
+            Transaction.objects.get(id=int(id)).delete()
+            
+            messages.add_message(request, messages.SUCCESS, "Transaction has been voided.")
+            
+            audit = AuditLog(audit_name=request.user.username, audit_action="Cancelled pending transaction.", audit_module="Point of Sale")
+            audit.save()
+            
+            return redirect("transaction_views")
+            
+    context = {
+        'page_name': page_name,
+        'tnum': id,
+
+    }
+ 
+
+    return render(request, "pos/cancel_payment.html", context)

@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
+
+from AuditTrail.models import AuditLog
 # sign in view
 def index(request):
     signInForm = SignInForm()
@@ -26,6 +28,9 @@ def index(request):
                 if user is not None:
                     login(request, user)
                     
+                    log = AuditLog.objects.create(audit_name=user.get_username, audit_action="Logged in", audit_module="Login")
+                    log.save()
+                    
                     if user.role == "customer":
                         return redirect('index')
                     else:
@@ -33,6 +38,7 @@ def index(request):
                     
                 else:
                     print("Error")
+                    
                     message = "Incorrect username or password."
                     
                     
@@ -51,6 +57,8 @@ def index(request):
 def logout_view(request):
     
     logout(request)
+    log = AuditLog.objects.create(audit_name=request.user, audit_action="Logged in", audit_module="Logout")
+    log.save()
     return redirect('index')
 
 

@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
+
+from AuditTrail.models import AuditLog
 from .forms import AddStockForm, ProductChangeForm, ProductCreationForm
 from .models import Products, StocksLog
 from django.core.paginator import Paginator
@@ -52,6 +54,9 @@ def create_product_page(request):
             product.save()
             
             messages.add_message(request, messages.SUCCESS, "New product has been registered successfully.")
+            
+            audit = AuditLog(audit_name=request.user.username, audit_action="Registered a product.", audit_module="Product Managements")
+            audit.save()
             return redirect('product_management')
         
         else:
@@ -76,6 +81,8 @@ def update_product_page(request, id):
             
             form.save()
             messages.add_message(request, messages.SUCCESS, f"{obj.name} has been successfully updated.")
+            audit = AuditLog(audit_name=request.user.username, audit_action="Updated a product.", audit_module="Product Managements")
+            audit.save()
             return redirect('product_management')
         
         else:
@@ -144,6 +151,9 @@ def add_stocks_view(request, id):
             new_stocks.save()
             obj.stocks += stocks_added
             obj.save()
+            
+            audit = AuditLog(audit_name=request.user.username, audit_action=f"Added a stock on product id {id}.", audit_module="Product Managements")
+            audit.save()
             
             messages.add_message(request, messages.SUCCESS, f"{obj.name}'s stocks has been updated successfully.")
             return redirect('stocks_management')
